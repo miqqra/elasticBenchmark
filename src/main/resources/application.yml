@@ -1,0 +1,10 @@
+spring:
+  security:
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+  elasticsearch:
+    uris: http://localhost:9200
+    socket-timeout: 10s
+    username: user
+    password: secret

@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.13
+    container_name: elasticsearch
+    environment:
+      xpack.security.enabled: false
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - elastic
+  kibana:
+    image: kibana:7.17.17
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      elasticsearch.ssl.verificationMode: none
+      server.ssl.enabled: false
+    networks:
+      - elastic
+    depends_on:
+      elasticsearch:
+        condition: service_started
+networks:
+  elastic:
